@@ -1,0 +1,54 @@
+@Api_HostAddress = http://localhost:5032
+
+GET {{Api_HostAddress}}/todos/
+Accept: application/json
+
+###
+
+GET {{Api_HostAddress}}/todos/1
+Accept: application/json
+
+
+### Send test email
+POST {{Api_HostAddress}}/email/send-test
+Content-Type: application/json
+
+{
+  "from": "sender@example.com",
+  "fromName": "John Doe",
+  "to": "part-coast@kg3ctepp.mailosaur.net",
+  "toName": "Part Coast",
+  "subject": "Test Email",
+  "htmlContent": "<h1>Hello Part Coast!</h1><p>This is a test email from John.</p>",
+  "textContent": "Hello Part Coast! This is a test email from John."
+}
+
+### Send marketing email
+POST {{Api_HostAddress}}/email/send-marketing
+Content-Type: application/json
+
+{
+  "from": "marketing@example.com",
+  "fromName": "Marketing Team",
+  "to": "lunch-record@kg3ctepp.mailosaur.net",
+  "toName": "Lunch Record",
+  "subject": "Special Offer Just for You!",
+  "htmlContent": "<h1>Hello Lunch!</h1><p>Get 50% off your next purchase.</p>",
+  "textContent": "Hello Lunch! Get 50% off your next purchase."
+}
+
+### Send transactional email
+POST {{Api_HostAddress}}/email/send-transactional
+Content-Type: application/json
+
+{
+  "from": "system@example.com",
+  "fromName": "Order System",
+  "to": "research-bet@kg3ctepp.mailosaur.net",
+  "toName": "Research Bet",
+  "subject": "Your Order Confirmation",
+  "htmlContent": "<h1>Hello Research!</h1><p>Your order #12345 has been confirmed.</p>",
+  "textContent": "Hello Research! Your order #12345 has been confirmed."
+}
+
+###
