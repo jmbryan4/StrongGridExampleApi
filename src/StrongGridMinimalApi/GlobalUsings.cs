@@ -1,1 +1,1 @@
-global using StrongGridClient = StrongGrid.Client; // Alias the StrongGrid.Client class
+global using StrongGridClient = StrongGrid.Client; // Optional Alias on the StrongGrid.Client class

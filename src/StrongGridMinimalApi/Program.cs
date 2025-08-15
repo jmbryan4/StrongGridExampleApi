@@ -1,8 +1,8 @@
+using StrongGrid;
 using StrongGridMinimalApi;
+using StrongGridMinimalApi.Extensions;
 using StrongGridMinimalApi.Models;
 using StrongGridMinimalApi.Services;
-using StrongGrid;
-using StrongGrid.Utilities;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
@@ -10,30 +10,18 @@ var builder = WebApplication.CreateSlimBuilder(args);
 builder.Services.ConfigureHttpJsonOptions(o => o.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default));
 
 // add StrongGrid client with resilience handler
-builder.Services.AddHttpClient("StrongGrid", client =>
-{
-    client.Timeout = TimeSpan.FromSeconds(15);
-    // other client configuration
-}).AddStandardResilienceHandler();
-builder.Services.AddScoped<StrongGridClient>(sp =>
-{
-    // linked by the "StrongGrid" name from the AddHttpClient above
-    var httpClient = sp.GetRequiredService<IHttpClientFactory>().CreateClient("StrongGrid");
-    var defaultApiKey = builder.Configuration["SendGrid:DefaultApiKey"];
-    ArgumentException.ThrowIfNullOrEmpty(defaultApiKey, "A SendGrid API key must be provided for StrongGrid");
-    var options = new StrongGridClientOptions { LogLevelFailedCalls = LogLevel.Error, LogLevelSuccessfulCalls = LogLevel.Debug };
-    var logger = sp.GetRequiredService<ILogger<StrongGridClient>>();
-    return new StrongGridClient(defaultApiKey, httpClient, options, logger);
-});
+builder.Services.AddStrongGridClient(builder.Configuration);
+
 // configure StrongGrid client options from appsettings.json (or other configuration sources)
 builder.Services.Configure<SendGridClientOptions>(builder.Configuration.GetSection("SendGrid"));
 
-// secure secrets vault service. stub implementation for demo purposes
+// secure secrets vault service. stub implementation for example purposes
 builder.Services.AddScoped<IVaultService, VaultService>();
 builder.Services.AddScoped<ISendGridApiKeyService, SendGridApiKeyService>();
 builder.Services.Configure<SecretsVaultOptions>(builder.Configuration.GetSection(SecretsVaultOptions.SectionName));
 // factory for creating StrongGrid clients with subuser support
 builder.Services.AddScoped<IStrongGridClientFactory, StrongGridClientFactory>();
+
 var app = builder.Build();
 
 #region Todo default example

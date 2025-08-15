@@ -12,8 +12,4 @@
         <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="9.8.0"/>
         <PackageReference Include="StrongGrid" Version="0.111.0"/>
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Extensions\" />
-    </ItemGroup>
 </Project>
